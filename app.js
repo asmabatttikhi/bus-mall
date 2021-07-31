@@ -1,8 +1,20 @@
 'use strict';
 //make object container for img to show three of them
 
+Product.allproduct =[];
 
-Product.allproduct = [];
+function handleStorage() {
+  let stringArr = JSON.stringify(Product.allproduct);
+  localStorage.setItem('voted', stringArr);
+}
+function getStorage() {
+  let data = localStorage.getItem('voted');
+  let parsedArr = JSON.parse(data);
+  if (parsedArr !== null) {
+    Product.allproduct=parsedArr;
+  }
+}
+
 var chart;
 
 function Product(nameproduct, srcurl) {
@@ -132,13 +144,17 @@ function handleUserClick(event) {
 
 
   } else {
-
     btn.hidden = false;
     btn.addEventListener('click', listmaker);
     imagesDiv.removeEventListener('click', handleUserClick);
   }
   chart.destroy();
   showChart();
+  handleStorage();
+
+  console.log('products');
+  console.log( localStorage.getItem('products'));
+
 }
 
 
@@ -165,8 +181,10 @@ function refreshdata(){
   }
 
 }
+getStorage();
 refreshdata();
 showChart();
+
 function showChart() {
   refreshdata();
   console.log(votesArr);
